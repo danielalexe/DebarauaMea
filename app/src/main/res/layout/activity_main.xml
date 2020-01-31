@@ -6,6 +6,16 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/ButtonStartScanner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="SCanner"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -1,2 +1,2 @@
-include ':app'
+include ':app', ':zxing', ':core'
 rootProject.name='DebarauaMea'

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/LabelProduct"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/ValueProduct"
+        android:text="Product Name"
+        android:padding="5dp"
+        android:layout_width="0dp"
+        android:textSize="8pt"
+        android:gravity="start|center"
+        android:layout_height="50dp"
+        />
+    <TextView
+        android:id="@+id/ValueProduct"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/LabelProduct"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:padding="5dp"
+        android:text="DEMO"
+        android:textSize="8pt"
+        android:gravity="start|center"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        />
+    <TextView
+        android:id="@+id/LabelExpirationDate"
+        app:layout_constraintTop_toBottomOf="@+id/LabelProduct"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/ValueExpirationDate"
+        android:text="Expiration Date"
+        android:padding="5dp"
+        android:layout_width="0dp"
+        android:textSize="8pt"
+        android:gravity="start|center"
+        android:layout_height="50dp"
+        />
+    <TextView
+        android:id="@+id/ValueExpirationDate"
+        app:layout_constraintTop_toBottomOf="@+id/ValueProduct"
+        app:layout_constraintStart_toEndOf="@+id/LabelExpirationDate"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="DEMO"
+        android:padding="5dp"
+        android:textSize="8pt"
+        android:gravity="start|center"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        />
+    <TextView
+        android:id="@+id/LabelQuantity"
+        app:layout_constraintTop_toBottomOf="@+id/LabelExpirationDate"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/ValueQuantity"
+        android:text="Quantity"
+        android:padding="5dp"
+        android:layout_width="0dp"
+        android:textSize="8pt"
+        android:gravity="start|center"
+        android:layout_height="50dp"
+        />
+    <TextView
+        android:id="@+id/ValueQuantity"
+        app:layout_constraintTop_toBottomOf="@+id/ValueExpirationDate"
+        app:layout_constraintStart_toEndOf="@+id/LabelQuantity"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="DEMO"
+        android:padding="5dp"
+        android:textSize="8pt"
+        android:gravity="start|center"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
