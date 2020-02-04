@@ -45,6 +45,8 @@ public class DTOProductsAdapter extends ArrayAdapter {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.products_list_element, parent, false);
         }
 
+
+
         //region Layout Elements Assignment
 
         TextView ValueProduct = convertView.findViewById(R.id.ValueProduct);
@@ -54,8 +56,15 @@ public class DTOProductsAdapter extends ArrayAdapter {
         TextView ValueQuantity = convertView.findViewById(R.id.ValueQuantity);
         TextView LabelQuantity = convertView.findViewById(R.id.LabelQuantity);
 
-
         //endregion
+
+        convertView.setBackgroundColor(getContext().getResources().getColor(R.color.icons));
+        ValueProduct.setTextColor(getContext().getResources().getColor(R.color.primary_text));
+        LabelProduct.setTextColor(getContext().getResources().getColor(R.color.primary_text));
+        ValueExpirationDate.setTextColor(getContext().getResources().getColor(R.color.primary_text));
+        LabelExpirationDate.setTextColor(getContext().getResources().getColor(R.color.primary_text));
+        ValueQuantity.setTextColor(getContext().getResources().getColor(R.color.primary_text));
+        LabelQuantity.setTextColor(getContext().getResources().getColor(R.color.primary_text));
 
         //region Layout color based on expiration date
 
