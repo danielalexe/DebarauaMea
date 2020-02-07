@@ -28,7 +28,6 @@ import java.util.Date;
 import java.util.Locale;
 
 import io.realm.Realm;
-import io.realm.RealmResults;
 
 public class EditProductActivity extends AppCompatActivity {
     @Override

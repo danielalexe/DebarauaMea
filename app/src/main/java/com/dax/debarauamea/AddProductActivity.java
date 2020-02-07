@@ -16,7 +16,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
-import android.widget.TextView;
 
 import com.dax.debarauamea.BarcodeScanner.FullScannerActivity;
 import com.dax.debarauamea.Objects.DTOProducts;

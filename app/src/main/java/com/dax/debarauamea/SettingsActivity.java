@@ -5,12 +5,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.SwitchCompat;
+import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.TaskStackBuilder;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -20,6 +22,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.CompoundButton;
@@ -102,7 +105,14 @@ public class SettingsActivity extends AppCompatActivity {
         SyncData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(SettingsActivity.this, "Not Yet Implemented", Toast.LENGTH_SHORT).show();
+
+                int status = ActivityCompat.checkSelfPermission(SettingsActivity.this, Manifest.permission.NFC);
+                if (status != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(SettingsActivity.this, new String[]{Manifest.permission.NFC}, 4322);
+                }else {
+                    Intent intent = new Intent(SettingsActivity.this, SyncNfcActivity.class);
+                    startActivity(intent);
+                }
             }
         });
 
