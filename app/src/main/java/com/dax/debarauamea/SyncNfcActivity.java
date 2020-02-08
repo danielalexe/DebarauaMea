@@ -1,20 +1,13 @@
 package com.dax.debarauamea;
 
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.nfc.NdefMessage;
-import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
-import android.nfc.NfcEvent;
 import android.os.Bundle;
-import android.os.Parcelable;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.dax.debarauamea.Objects.DTOProducts;
 import com.google.gson.Gson;
@@ -25,8 +18,6 @@ import io.realm.Realm;
 import io.realm.RealmResults;
 import io.realm.Sort;
 
-import static android.nfc.NdefRecord.createMime;
-
 public class SyncNfcActivity extends AppCompatActivity implements OutcomingNfcManager.NfcActivity {
 
 //    private TextView tvOutcomingMessage;
@@ -34,7 +25,6 @@ public class SyncNfcActivity extends AppCompatActivity implements OutcomingNfcMa
 //    private Button btnSetOutcomingMessage;
 
     private NfcAdapter nfcAdapter;
-    private OutcomingNfcManager outcomingNfccallback;
     private String ProductsJson;
 
     @Override
@@ -53,7 +43,7 @@ public class SyncNfcActivity extends AppCompatActivity implements OutcomingNfcMa
         initViews();
 
         // encapsulate sending logic in a separate class
-        this.outcomingNfccallback = new OutcomingNfcManager(this);
+        OutcomingNfcManager outcomingNfccallback = new OutcomingNfcManager(this);
         this.nfcAdapter.setOnNdefPushCompleteCallback(outcomingNfccallback, this);
         this.nfcAdapter.setNdefPushMessageCallback(outcomingNfccallback, this);
     }
@@ -84,10 +74,10 @@ public class SyncNfcActivity extends AppCompatActivity implements OutcomingNfcMa
         return this.nfcAdapter != null;
     }
 
-    private void setOutGoingMessage() {
+//    private void setOutGoingMessage() {
 //        String outMessage = this.etOutcomingMessage.getText().toString();
 //        this.tvOutcomingMessage.setText(outMessage);
-    }
+//    }
 
     @Override
     public String getOutcomingMessage() {

@@ -1,24 +1,7 @@
 package com.dax.debarauamea;
 
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatButton;
-import androidx.appcompat.widget.AppCompatTextView;
-import androidx.appcompat.widget.SwitchCompat;
-import androidx.core.app.ActivityCompat;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.TaskStackBuilder;
-import androidx.work.OneTimeWorkRequest;
-import androidx.work.PeriodicWorkRequest;
-import androidx.work.WorkManager;
-
 import android.Manifest;
 import android.app.Activity;
-import android.app.Notification;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -26,8 +9,14 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.CompoundButton;
-import android.widget.Switch;
-import android.widget.Toast;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.SwitchCompat;
+import androidx.core.app.ActivityCompat;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
 
 import com.dax.debarauamea.Objects.DTOProducts;
 
@@ -44,7 +33,7 @@ public class SettingsActivity extends AppCompatActivity {
 
         //region Layout Elements Assignment
 
-        AppCompatTextView LabelNotifications = findViewById(R.id.LabelNotifications);
+//        AppCompatTextView LabelNotifications = findViewById(R.id.LabelNotifications);
         SwitchCompat ValueNotifications = findViewById(R.id.ValueNotifications);
 
         AppCompatButton ClearData = findViewById(R.id.ClearData);
@@ -58,12 +47,12 @@ public class SettingsActivity extends AppCompatActivity {
         ValueNotifications.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked==true)
+                if (isChecked)
                 {
                     SharedPreferences sharedPref = GetSharedPreferences(SettingsActivity.this);
                     SharedPreferences.Editor editor = sharedPref.edit();
                     editor.putBoolean("Notifications",true);
-                    editor.commit();
+                    editor.apply();
 
                     PeriodicWorkRequest saveRequest =
                             new PeriodicWorkRequest.Builder(NotificationWorker.class, 1, TimeUnit.DAYS)
@@ -76,7 +65,7 @@ public class SettingsActivity extends AppCompatActivity {
                     SharedPreferences sharedPref = GetSharedPreferences(SettingsActivity.this);
                     SharedPreferences.Editor editor = sharedPref.edit();
                     editor.putBoolean("Notifications",false);
-                    editor.commit();
+                    editor.apply();
 
                     WorkManager.getInstance(SettingsActivity.this).cancelAllWorkByTag("Debara");
                 }

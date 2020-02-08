@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 
 import com.dax.debarauamea.R;
@@ -16,7 +17,7 @@ import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
 public class FormatSelectorDialogFragment extends DialogFragment {
     public interface FormatSelectorDialogListener {
-        public void onFormatsSaved(ArrayList<Integer> selectedIndices);
+        void onFormatsSaved(ArrayList<Integer> selectedIndices);
     }
 
     private ArrayList<Integer> mSelectedIndices;
@@ -27,21 +28,22 @@ public class FormatSelectorDialogFragment extends DialogFragment {
         setRetainInstance(true);
     }
 
-    public static FormatSelectorDialogFragment newInstance(FormatSelectorDialogListener listener, ArrayList<Integer> selectedIndices) {
+    static FormatSelectorDialogFragment newInstance(FormatSelectorDialogListener listener, ArrayList<Integer> selectedIndices) {
         FormatSelectorDialogFragment fragment = new FormatSelectorDialogFragment();
         if(selectedIndices == null) {
-            selectedIndices = new ArrayList<Integer>();
+            selectedIndices = new ArrayList<>();
         }
-        fragment.mSelectedIndices = new ArrayList<Integer>(selectedIndices);
+        fragment.mSelectedIndices = new ArrayList<>(selectedIndices);
         fragment.mListener = listener;
         return fragment;
     }
 
     @Override
+    @NonNull
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         if(mSelectedIndices == null || mListener == null) {
             dismiss();
-            return null;
+//            return null;
         }
 
         String[] formats = new String[ZXingScannerView.ALL_FORMATS.size()];
@@ -49,11 +51,7 @@ public class FormatSelectorDialogFragment extends DialogFragment {
         int i = 0;
         for(BarcodeFormat format : ZXingScannerView.ALL_FORMATS) {
             formats[i] = format.toString();
-            if(mSelectedIndices.contains(i)) {
-                checkedIndices[i] = true;
-            } else {
-                checkedIndices[i] = false;
-            }
+            checkedIndices[i] = mSelectedIndices.contains(i);
             i++;
         }
 
@@ -71,7 +69,7 @@ public class FormatSelectorDialogFragment extends DialogFragment {
                                     mSelectedIndices.add(which);
                                 } else if (mSelectedIndices.contains(which)) {
                                     // Else, if the item is already in the array, remove it
-                                    mSelectedIndices.remove(mSelectedIndices.indexOf(which));
+                                    mSelectedIndices.remove((Integer) which);
                                 }
                             }
                         })

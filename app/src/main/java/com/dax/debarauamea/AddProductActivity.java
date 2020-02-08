@@ -1,12 +1,5 @@
 package com.dax.debarauamea;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatButton;
-import androidx.appcompat.widget.AppCompatCheckBox;
-import androidx.appcompat.widget.AppCompatEditText;
-import androidx.appcompat.widget.AppCompatTextView;
-import androidx.core.app.ActivityCompat;
-
 import android.Manifest;
 import android.app.Activity;
 import android.app.DatePickerDialog;
@@ -17,14 +10,21 @@ import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.AppCompatCheckBox;
+import androidx.appcompat.widget.AppCompatEditText;
+import androidx.appcompat.widget.AppCompatTextView;
+import androidx.core.app.ActivityCompat;
+
 import com.dax.debarauamea.BarcodeScanner.FullScannerActivity;
 import com.dax.debarauamea.Objects.DTOProducts;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Locale;
+import java.util.Objects;
 
 import io.realm.Realm;
 
@@ -33,21 +33,17 @@ public class AddProductActivity extends AppCompatActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        switch(requestCode) {
-            case (101) : {
-                if (resultCode == Activity.RESULT_OK) {
-                    String returnValue = data.getStringExtra("BARCODE");
-                    ValueBarcode.setText(returnValue);
-                    Realm realm = Realm.getDefaultInstance();
-                    DTOProducts OldItem = realm.where(DTOProducts.class)
-                            .equalTo("BARCODE",returnValue)
-                            .findFirst();
-                    if (OldItem!=null)
-                    {
-                        ValueName.setText(OldItem.NAME);
-                    }
+        if (requestCode == 101) {
+            if (resultCode == Activity.RESULT_OK) {
+                String returnValue = data.getStringExtra("BARCODE");
+                ValueBarcode.setText(returnValue);
+                Realm realm = Realm.getDefaultInstance();
+                DTOProducts OldItem = realm.where(DTOProducts.class)
+                        .equalTo("BARCODE", returnValue)
+                        .findFirst();
+                if (OldItem != null) {
+                    ValueName.setText(OldItem.NAME);
                 }
-                break;
             }
         }
     }
@@ -63,20 +59,20 @@ public class AddProductActivity extends AppCompatActivity {
         //region Layout Elements Assignment
 
         ValueBarcode = findViewById(R.id.ValueBarcode);
-        AppCompatTextView LabelBarcode = findViewById(R.id.LabelBarcode);
+//        AppCompatTextView LabelBarcode = findViewById(R.id.LabelBarcode);
         AppCompatButton ButtonBarcode = findViewById(R.id.ButtonScanBarcode);
 
         ValueName = findViewById(R.id.ValueName);
-        AppCompatTextView LabelName = findViewById(R.id.LabelName);
+//        AppCompatTextView LabelName = findViewById(R.id.LabelName);
 
         final AppCompatCheckBox ValueHasExpirationDate = findViewById(R.id.CheckBoxHasExpirationDate);
-        AppCompatTextView LabelHasExpirationDate = findViewById(R.id.LabelHasExpirationDate);
+//        AppCompatTextView LabelHasExpirationDate = findViewById(R.id.LabelHasExpirationDate);
 
         final AppCompatEditText ValueExpirationDate = findViewById(R.id.ValueExpirationDate);
         final AppCompatTextView LabelExpirationDate = findViewById(R.id.LabelExpirationDate);
 
         final AppCompatEditText ValueQuantity = findViewById(R.id.ValueQuantity);
-        AppCompatTextView LabelQuantity = findViewById(R.id.LabelQuantity);
+//        AppCompatTextView LabelQuantity = findViewById(R.id.LabelQuantity);
 
         AppCompatButton ButtonAddProduct = findViewById(R.id.ButtonAddProduct);
 
@@ -98,7 +94,7 @@ public class AddProductActivity extends AppCompatActivity {
         ValueHasExpirationDate.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked==false)
+                if (!isChecked)
                 {
                     ValueExpirationDate.setEnabled(false);
                     LabelExpirationDate.setEnabled(false);
@@ -140,14 +136,13 @@ public class AddProductActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 final DTOProducts dto = new DTOProducts();
-                dto.BARCODE=ValueBarcode.getText().toString();
-                dto.QUANTITY=Float.parseFloat(ValueQuantity.getText().toString());
-                dto.NAME=ValueName.getText().toString().toUpperCase();
+                dto.BARCODE= Objects.requireNonNull(ValueBarcode.getText()).toString();
+                dto.QUANTITY=Float.parseFloat(Objects.requireNonNull(ValueQuantity.getText()).toString());
+                dto.NAME= Objects.requireNonNull(ValueName.getText()).toString().toUpperCase();
                 dto.HAS_EXPIRATION_DATE=ValueHasExpirationDate.isChecked();
-                SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+                SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy",Locale.UK);
                 try {
-                    Date date = format.parse(ValueExpirationDate.getText().toString());
-                    dto.EXPIRATION_DATE=date;
+                    dto.EXPIRATION_DATE= format.parse(Objects.requireNonNull(ValueExpirationDate.getText()).toString());
 //                    System.out.println(date);
                 } catch (ParseException e) {
                     e.printStackTrace();
@@ -155,7 +150,7 @@ public class AddProductActivity extends AppCompatActivity {
 
                 final Realm realm = Realm.getDefaultInstance();
                 realm.beginTransaction();
-                final DTOProducts managedDog = realm.copyToRealm(dto); // Persist unmanaged objects
+                realm.copyToRealm(dto); // Persist unmanaged objects
                 realm.commitTransaction();
                 onBackPressed();
 

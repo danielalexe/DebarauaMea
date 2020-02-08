@@ -6,10 +6,12 @@ import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
@@ -20,6 +22,7 @@ import com.google.zxing.Result;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
@@ -54,7 +57,7 @@ public class FullScannerActivity extends BaseScannerActivity implements MessageD
         setContentView(R.layout.activity_simple_scanner);
         setupToolbar();
 
-        ViewGroup contentFrame = (ViewGroup) findViewById(R.id.content_frame);
+        ViewGroup contentFrame = findViewById(R.id.content_frame);
         mScannerView = new ZXingScannerView(this);
         setupFormats();
         contentFrame.addView(mScannerView);
@@ -70,7 +73,7 @@ public class FullScannerActivity extends BaseScannerActivity implements MessageD
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putBoolean(FLASH_STATE, mFlash);
         outState.putBoolean(AUTO_FOCUS_STATE, mAutoFocus);
@@ -87,7 +90,8 @@ public class FullScannerActivity extends BaseScannerActivity implements MessageD
         } else {
             menuItem = menu.add(Menu.NONE, R.id.menu_flash, 0, R.string.flash_off);
         }
-        MenuItemCompat.setShowAsAction(menuItem, MenuItem.SHOW_AS_ACTION_NEVER);
+//        MenuItemCompat.setShowAsAction(menuItem, MenuItem.SHOW_AS_ACTION_NEVER);
+        menuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
 
 
         if(mAutoFocus) {
@@ -95,13 +99,16 @@ public class FullScannerActivity extends BaseScannerActivity implements MessageD
         } else {
             menuItem = menu.add(Menu.NONE, R.id.menu_auto_focus, 0, R.string.auto_focus_off);
         }
-        MenuItemCompat.setShowAsAction(menuItem, MenuItem.SHOW_AS_ACTION_NEVER);
+//        MenuItemCompat.setShowAsAction(menuItem, MenuItem.SHOW_AS_ACTION_NEVER);
+        menuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
 
         menuItem = menu.add(Menu.NONE, R.id.menu_formats, 0, R.string.formats);
-        MenuItemCompat.setShowAsAction(menuItem, MenuItem.SHOW_AS_ACTION_NEVER);
+//        MenuItemCompat.setShowAsAction(menuItem, MenuItem.SHOW_AS_ACTION_NEVER);
+        menuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
 
         menuItem = menu.add(Menu.NONE, R.id.menu_camera_selector, 0, R.string.select_camera);
-        MenuItemCompat.setShowAsAction(menuItem, MenuItem.SHOW_AS_ACTION_NEVER);
+//        MenuItemCompat.setShowAsAction(menuItem, MenuItem.SHOW_AS_ACTION_NEVER);
+        menuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
 
         return super.onCreateOptionsMenu(menu);
     }
@@ -148,7 +155,8 @@ public class FullScannerActivity extends BaseScannerActivity implements MessageD
             Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
             Ringtone r = RingtoneManager.getRingtone(getApplicationContext(), notification);
             r.play();
-        } catch (Exception e) {}
+        } catch (Exception e) {
+            Log.e("ERROR", Objects.requireNonNull(e.getMessage()));}
         Intent resultIntent = new Intent();
         resultIntent.putExtra("BARCODE", rawResult.getText());
         setResult(Activity.RESULT_OK, resultIntent);
@@ -156,10 +164,10 @@ public class FullScannerActivity extends BaseScannerActivity implements MessageD
 //        showMessageDialog("Contents = " + rawResult.getText() + ", Format = " + rawResult.getBarcodeFormat().toString());
     }
 
-    public void showMessageDialog(String message) {
-        DialogFragment fragment = MessageDialogFragment.newInstance("Scan Results", message, this);
-        fragment.show(getSupportFragmentManager(), "scan_results");
-    }
+//    public void showMessageDialog(String message) {
+//        DialogFragment fragment = MessageDialogFragment.newInstance("Scan Results", message, this);
+//        fragment.show(getSupportFragmentManager(), "scan_results");
+//    }
 
     public void closeMessageDialog() {
         closeDialog("scan_results");
@@ -198,9 +206,9 @@ public class FullScannerActivity extends BaseScannerActivity implements MessageD
     }
 
     public void setupFormats() {
-        List<BarcodeFormat> formats = new ArrayList<BarcodeFormat>();
+        List<BarcodeFormat> formats = new ArrayList<>();
         if(mSelectedIndices == null || mSelectedIndices.isEmpty()) {
-            mSelectedIndices = new ArrayList<Integer>();
+            mSelectedIndices = new ArrayList<>();
             for(int i = 0; i < ZXingScannerView.ALL_FORMATS.size(); i++) {
                 mSelectedIndices.add(i);
             }

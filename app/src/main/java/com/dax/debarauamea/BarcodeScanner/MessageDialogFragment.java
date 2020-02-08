@@ -5,11 +5,12 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 
 public class MessageDialogFragment extends DialogFragment {
     public interface MessageDialogListener {
-        public void onDialogPositiveClick(DialogFragment dialog);
+        void onDialogPositiveClick(DialogFragment dialog);
     }
 
     private String mTitle;
@@ -30,6 +31,7 @@ public class MessageDialogFragment extends DialogFragment {
     }
 
     @Override
+    @NonNull
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setMessage(mMessage)

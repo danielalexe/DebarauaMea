@@ -172,34 +172,38 @@ public class MainMenuActivity extends AppCompatActivity {
         if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(action)) {
             Parcelable[] parcelables = intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
 
-            NdefMessage inNdefMessage = (NdefMessage) parcelables[0];
-            NdefRecord[] inNdefRecords = inNdefMessage.getRecords();
-            NdefRecord ndefRecord_0 = inNdefRecords[0];
+            NdefMessage inNdefMessage;
+            if (parcelables != null) {
+                inNdefMessage = (NdefMessage) parcelables[0];
+                NdefRecord[] inNdefRecords = inNdefMessage.getRecords();
+                NdefRecord ndefRecord_0 = inNdefRecords[0];
 
-            String inMessage = new String(ndefRecord_0.getPayload());
-            Type listType = new TypeToken<ArrayList<DTOProducts>>(){}.getType();
-            List<DTOProducts> list = new Gson().fromJson(inMessage,listType);
+                String inMessage = new String(ndefRecord_0.getPayload());
+                Type listType = new TypeToken<ArrayList<DTOProducts>>(){}.getType();
+                List<DTOProducts> list = new Gson().fromJson(inMessage,listType);
 
-            realm.beginTransaction();
-            realm.delete(DTOProducts.class);
-            realm.commitTransaction();
-
-            for (DTOProducts product:list)
-            {
                 realm.beginTransaction();
-                final DTOProducts managedDog = realm.copyToRealm(product); // Persist unmanaged objects
+                realm.delete(DTOProducts.class);
                 realm.commitTransaction();
+
+                for (DTOProducts product:list)
+                {
+                    realm.beginTransaction();
+                    realm.copyToRealm(product); // Persist unmanaged objects
+                    realm.commitTransaction();
+                }
+
+                RefreshList();
+
+                new AlertDialog.Builder(MainMenuActivity.this)
+                        .setTitle("Data Sync")
+                        .setMessage("Data received succesfully")
+                        .setIcon(android.R.drawable.ic_dialog_info)
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                            }}).show();
             }
 
-            RefreshList();
-
-            new AlertDialog.Builder(MainMenuActivity.this)
-                    .setTitle("Data Sync")
-                    .setMessage("Data received succesfully")
-                    .setIcon(android.R.drawable.ic_dialog_info)
-                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int whichButton) {
-                        }}).show();
 
 //            this.tvIncomingMessage.setText(inMessage);
         }
